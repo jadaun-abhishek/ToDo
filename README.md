@@ -13,20 +13,13 @@ The ToDo App is a Flutter-based application designed to manage and organize task
 
 ## Demo
 ![Demo Video](https://github.com/user-attachments/assets/674a7848-e74a-4487-95e0-ebc13dea1dcf)
-<img width="377" alt="Screenshot 2024-09-07 at 1 15 00 AM" src="https://github.com/user-attachments/assets/3ca2c02f-98b0-4dfe-af84-ced0c827955b">
-<img width="378" alt="Screenshot 2024-09-07 at 1 15 13 AM" src="https://github.com/user-attachments/assets/ab16d3fd-c4e4-4d61-a8d2-48bc5df5028c"><img width="367" alt="Screenshot 2024-09-07 at 1 15 31 AM" src="https://github.com/user-attachments/assets/7ab17af3-5d3c-41a9-993d-db558ade1659">
-<img width="361" alt="Screenshot 2024-09-07 at 1 15 48 AM" src="https://github.com/user-attachments/assets/cde335ad-d35a-435d-9b23-81d39fcf2ae8">
-<img width="369" alt="Screenshot 2024-09-07 at 1 16 06 AM" src="https://github.com/user-attachments/assets/951ae6ed-906e-4bf1-86fc-93c3d23ac24a">
-
 
 
 ## Screenshots
-**Dark Mode**
+**Dark Mode** **Light Mode**
 ![44A45CCB-15A8-4BC0-AC39-2EEC7512D177](https://github.com/user-attachments/assets/b628a89b-808d-445e-adba-9148c2a9c2a8)
 
 
-**Light Mode**
-![Light Mode](path/to/light_mode_image.png)
 
 ## Getting Started
 
