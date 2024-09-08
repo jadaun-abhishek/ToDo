@@ -5,12 +5,13 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:get/get.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:permission_handler/permission_handler.dart'; // Import permission_handler
 
 import '../Model/Task.dart';
 
 class NotifyHelper {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin(); //
+      FlutterLocalNotificationsPlugin();
 
   Future<void> initializeNotification() async {
     _configureLocalTimeZone();
@@ -34,6 +35,9 @@ class NotifyHelper {
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
     );
+
+    // Request Android notification permissions
+    requestAndroidPermissions();
   }
 
   Future<void> onDidReceiveLocalNotification(
@@ -61,7 +65,19 @@ class NotifyHelper {
         );
   }
 
-  // configure current notification
+  void requestAndroidPermissions() async {
+    if (await Permission.notification.isDenied) {
+      // Request permission
+      PermissionStatus status = await Permission.notification.request();
+
+      if (status.isGranted) {
+        print('Notification permission granted');
+      } else {
+        print('Notification permission denied');
+      }
+    }
+  }
+
   Future<void> displayNotification(
       {required String title, required String body}) async {
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
@@ -80,14 +96,12 @@ class NotifyHelper {
     );
   }
 
-  // configure scheduledNotifications
-  scheduledNotification(int hour, int minutes, Task task) async {
+  Future<void> scheduledNotification(int hour, int minutes, Task task) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
         0,
         task.title,
         task.description,
         _convertTime(hour, minutes),
-        // tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
         const NotificationDetails(
             android: AndroidNotificationDetails(
                 'your channel name', 'your channel description')),
