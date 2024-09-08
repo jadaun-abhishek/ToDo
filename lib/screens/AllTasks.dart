@@ -289,4 +289,6 @@ class _AllTasksState extends State<AllTasks> {
       }),
     );
   }
+
+  // Sort the data on the basis of priority and lastDate
 }

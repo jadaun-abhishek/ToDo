@@ -128,8 +128,8 @@ class _HomeState extends State<Home> {
               notifyHelper.displayNotification(
                 title: "Theme changed",
                 body: Get.isDarkMode
-                    ? "Activated Dark Theme"
-                    : "Activated Light Theme",
+                    ? "Activated Light Theme"
+                    : "Activated Dark Theme",
               );
             },
             child: Icon(

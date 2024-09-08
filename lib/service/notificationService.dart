@@ -37,12 +37,7 @@ class NotifyHelper {
   }
 
   Future<void> onDidReceiveLocalNotification(
-      int id, String? title, String? body, String? payload) async {
-    // display a dialog with the notification details, tap ok to go to another page
-    Get.dialog(
-      Text('Welcome to ToDo.'),
-    );
-  }
+      int id, String? title, String? body, String? payload) async {}
 
   Future<void> selectNotification(String? payload) async {
     if (payload != null) {
@@ -66,9 +61,9 @@ class NotifyHelper {
         );
   }
 
+  // configure current notification
   Future<void> displayNotification(
       {required String title, required String body}) async {
-    print("doing test");
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
         title, body,
         importance: Importance.max, priority: Priority.high);
@@ -78,13 +73,14 @@ class NotifyHelper {
         iOS: iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
       0,
-      'You change your theme',
-      'You changed your theme back !',
+      title,
+      body,
       platformChannelSpecifics,
       payload: 'Default_Sound',
     );
   }
 
+  // configure scheduledNotifications
   scheduledNotification(int hour, int minutes, Task task) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
         0,

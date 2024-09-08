@@ -5,12 +5,12 @@ class Task {
   int? isCompleted;
   String? date;
   String? startTime;
-  int? color;
+  int? priority;
   String? repeat;
 
   // Constructor
   Task(this.title, this.description, this.isCompleted, this.date,
-      this.startTime, this.color, this.repeat);
+      this.startTime, this.priority, this.repeat);
 
   Task.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -19,7 +19,7 @@ class Task {
     isCompleted = json['isCompleted'];
     date = json['date'];
     startTime = json['startTime'];
-    color = json['color'];
+    priority = json['color'];
     repeat = json['repeat'];
   }
 
@@ -31,7 +31,7 @@ class Task {
     data['isCompleted'] = this.isCompleted;
     data['date'] = this.date;
     data['startTime'] = this.startTime;
-    data['color'] = this.color;
+    data['color'] = this.priority;
     data['repeat'] = this.repeat;
 
     return data;

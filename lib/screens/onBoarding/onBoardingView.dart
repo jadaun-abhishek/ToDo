@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_common/get_reset.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:todo/Themes.dart';
@@ -22,7 +25,7 @@ class _OnboardingViewState extends State<OnboardingView> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomSheet: Container(
-        color: Colors.white,
+        color: Get.isDarkMode ? darkHeaderClr : whiteLightMode,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
         child: isLastPage
             ? getStarted()
@@ -87,12 +90,7 @@ class _OnboardingViewState extends State<OnboardingView> {
     );
   }
 
-  //Now the problem is when press get started button
-  // after re run the app we see again the onboarding screen
-  // so lets do one time onboarding
-
   //Get started button
-
   Widget getStarted() {
     return Container(
       decoration: BoxDecoration(
@@ -105,10 +103,9 @@ class _OnboardingViewState extends State<OnboardingView> {
             pres.setBool("onboarding", true);
 
             //After we press get started button this onboarding value become true
-            // same key
+            // It checks if the widget still part of the widget tree, so the process to store the preferences variable completes then go to other page.
             if (!mounted) return;
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => Home()));
+            Get.to(const Home());
           },
           child: const Text(
             "Get started",

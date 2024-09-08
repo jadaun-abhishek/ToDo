@@ -41,8 +41,12 @@ class _CompletedTaskState extends State<CompletedTask> {
   _showTasks() {
     return Expanded(
       child: Obx(() {
-        if (_taskController.taskList == null ||
-            _taskController.taskList.isEmpty) {
+        // Filter completed tasks
+        var completedTasks = _taskController.taskList
+            .where((task) => task.isCompleted == 1)
+            .toList();
+
+        if (completedTasks.isEmpty) {
           // Handle case where task list is null or empty
           return Center(
             child: Column(
@@ -60,21 +64,6 @@ class _CompletedTaskState extends State<CompletedTask> {
                 ),
               ],
             ),
-          );
-        }
-
-        // Filter completed tasks
-        var completedTasks = _taskController.taskList
-            .where((task) => task.isCompleted == 1)
-            .toList();
-
-        // Check if there are completed tasks
-        if (completedTasks.isEmpty) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('No completed tasks'),
-            ],
           );
         }
 

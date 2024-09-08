@@ -30,7 +30,7 @@ class Tasktile extends StatelessWidget {
             color: Get.isDarkMode ? tileDarkColor : Colors.white,
             border: Border(
                 right: BorderSide(
-              color: _getBGClr(task?.color ?? 0, task?.isCompleted ?? 0),
+              color: _getBGClr(task?.priority ?? 0, task?.isCompleted ?? 0),
               width: 20,
             ))),
         child: Row(

@@ -7,7 +7,8 @@ import 'package:get/get.dart';
 import 'package:todo/customWidgets/Button.dart';
 
 class AddTask extends StatefulWidget {
-  final Task? task; // Add this field to accept a task for editing
+  // field to accept a task for editing
+  final Task? task;
 
   const AddTask({super.key, this.task});
 
@@ -22,7 +23,6 @@ class _AddTaskState extends State<AddTask> {
   // Set the current date/time
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _startTime = TimeOfDay.now();
-  TimeOfDay _endTime = TimeOfDay.now();
 
   // Repeat the reminder option
   String _selectedRepeat = 'None';
@@ -56,7 +56,7 @@ class _AddTaskState extends State<AddTask> {
       _selectedDate = DateFormat.yMd()
           .parse(widget.task!.date ?? DateFormat.yMd().format(DateTime.now()));
       _startTime = _parseTime(widget.task!.startTime ?? '');
-      _selectedColor = widget.task!.color ?? 0;
+      _selectedColor = widget.task!.priority ?? 0;
       _selectedRepeat = widget.task!.repeat ?? 'None';
     } else {
       // Set default values if no task is provided
@@ -98,20 +98,6 @@ class _AddTaskState extends State<AddTask> {
       setState(() {
         _startTime = pickedTime;
         _startTimeController.text = _formatTimeOfDay(_startTime);
-      });
-    }
-  }
-
-  // Select the end time
-  Future<void> _selectEndTime(BuildContext context) async {
-    TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: _endTime,
-    );
-
-    if (pickedTime != null && pickedTime != _endTime) {
-      setState(() {
-        _endTime = pickedTime;
       });
     }
   }
