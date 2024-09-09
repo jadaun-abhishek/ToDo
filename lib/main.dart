@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:todo/DbHelper/DbHelper.dart';
-import 'package:todo/screens/Home.dart';
-import 'package:todo/screens/onBoarding/onBoardingView.dart';
+import 'package:todo/View/screens/Home.dart';
+import 'package:todo/View/screens/onBoarding/onBoardingView.dart';
 import 'package:todo/service/themeService.dart';
-import 'Themes.dart';
+import 'View/Constants/Themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {

@@ -1,5 +1,6 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart'; // Import this to use path.join
+// To get the path of the database
+import 'package:path/path.dart';
 
 import '../Model/Task.dart';
 
@@ -14,8 +15,7 @@ class DbHelper {
       return;
     }
     try {
-      String _path =
-          join(await getDatabasesPath(), 'tasks.db'); // Use path.join
+      String _path = join(await getDatabasesPath(), 'tasks.db');
       _db =
           await openDatabase(_path, version: _version, onCreate: (db, version) {
         print("Creating a new Database");

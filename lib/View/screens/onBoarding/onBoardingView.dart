@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:todo/Themes.dart';
-import 'package:todo/screens/Home.dart';
-import 'package:todo/screens/onBoarding/onBoarding_Data.dart';
+import 'package:todo/View/Constants/Themes.dart';
+import 'package:todo/View/screens/Home.dart';
+import 'package:todo/View/screens/onBoarding/onBoarding_Data.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});

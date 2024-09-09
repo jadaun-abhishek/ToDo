@@ -5,15 +5,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/Controller/TaskController.dart';
-import 'package:todo/Themes.dart';
-import 'package:todo/customWidgets/TaskTile.dart';
-import 'package:todo/screens/AddTask.dart';
-import 'package:todo/screens/AllTasks.dart';
-import 'package:todo/screens/CompletedTask.dart';
+import 'package:todo/View/Constants/Themes.dart';
+import 'package:todo/View/customWidgets/TaskTile.dart';
+import 'package:todo/View/screens/AddTask.dart';
+import 'package:todo/View/screens/AllTasks.dart';
+import 'package:todo/View/screens/CompletedTask.dart';
 import 'package:todo/service/notificationService.dart';
 import 'package:todo/service/themeService.dart';
 import 'package:get/get.dart';
-import '../Model/Task.dart';
+import 'package:todo/Model/Task.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

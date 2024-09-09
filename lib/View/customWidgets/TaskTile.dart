@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../Model/Task.dart';
-import '../Themes.dart';
+import 'package:todo/Model/Task.dart';
+import 'package:todo/View/Constants/Themes.dart';
 
 class Tasktile extends StatelessWidget {
   final Task? task;

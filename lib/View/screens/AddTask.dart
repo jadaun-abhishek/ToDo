@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo/Controller/TaskController.dart';
 import 'package:todo/Model/Task.dart';
-import 'package:todo/Themes.dart';
+import 'package:todo/View/Constants/Themes.dart';
 import 'package:get/get.dart';
-import 'package:todo/customWidgets/Button.dart';
+import 'package:todo/View/customWidgets/Button.dart';
 
 class AddTask extends StatefulWidget {
   // field to accept a task for editing

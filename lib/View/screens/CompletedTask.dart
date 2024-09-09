@@ -3,10 +3,10 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-import '../Controller/TaskController.dart';
-import '../Model/Task.dart';
-import '../Themes.dart';
-import '../customWidgets/TaskTile.dart';
+import 'package:todo/Controller/TaskController.dart';
+import 'package:todo/Model/Task.dart';
+import 'package:todo/View/Constants/Themes.dart';
+import 'package:todo/View/customWidgets/TaskTile.dart';
 import 'AddTask.dart';
 
 class CompletedTask extends StatefulWidget {
