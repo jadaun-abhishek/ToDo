@@ -77,6 +77,8 @@ class _HomeState extends State<Home> {
   // App Bar design
   _appBar() {
     return AppBar(
+      // to remove the back button
+      automaticallyImplyLeading: false,
       backgroundColor: context.theme.scaffoldBackgroundColor,
       title: SizedBox(
         width: MediaQuery.of(context).size.width * 100, // Adjusted width

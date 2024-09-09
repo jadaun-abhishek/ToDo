@@ -11,8 +11,10 @@ class TaskController extends GetxController {
     super.onReady();
   }
 
-  // List of all tasks variable observable
+  // List of all tasks variable observable (whenever data changes UI will be updated - obs)
   var taskList = <Task>[].obs;
+
+  // RxString automatically updates the UI, when data is changed.
   RxString searchQuery = ''.obs;
 
   // Filter the query
@@ -64,5 +66,25 @@ class TaskController extends GetxController {
   Future<void> updateTask(Task task) async {
     await DbHelper.update(task);
     getTasks(); // Refresh task list after updating a task
+  }
+
+  // Method to filter tasks based on priority
+  void filterTasksByPriority(String priorityString) {
+    List<Task> highPriorityTasks =
+        taskList.where((task) => task.priority == 2).toList();
+    List<Task> mediumPriorityTasks =
+        taskList.where((task) => task.priority == 1).toList();
+    List<Task> lowPriorityTasks =
+        taskList.where((task) => task.priority == 0).toList();
+
+    if (priorityString == 'high') {
+      // Concatenate the lists in descending order of priority
+      taskList.value =
+          highPriorityTasks + mediumPriorityTasks + lowPriorityTasks;
+    } else if (priorityString == 'low') {
+      // Concatenate the lists in ascending order of priority
+      taskList.value =
+          lowPriorityTasks + mediumPriorityTasks + highPriorityTasks;
+    }
   }
 }

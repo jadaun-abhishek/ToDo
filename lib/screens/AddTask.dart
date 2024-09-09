@@ -217,6 +217,7 @@ class _AddTaskState extends State<AddTask> {
               onTap: () {
                 setState(() {
                   _selectedColor = index;
+                  print(_selectedColor);
                 });
               },
               child: Padding(

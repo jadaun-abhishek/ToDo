@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Controller/TaskController.dart';
 import '../Model/Task.dart';
 import '../Themes.dart';
@@ -16,116 +16,110 @@ class AllTasks extends StatefulWidget {
 }
 
 class _AllTasksState extends State<AllTasks> {
-  TaskController _taskController = Get.put(TaskController());
+  final TaskController _taskController = Get.put(TaskController());
   bool _isSearching = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          // access to the widget theme data associated with the current widget's location
-          backgroundColor: context.theme.scaffoldBackgroundColor,
-          title: Text('All Task'),
-        ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: SizedBox(
-                width:
-                    MediaQuery.of(context).size.width * 100, // Adjusted width
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Search',
-                    filled: true,
-                    fillColor: Get.isDarkMode ? tileDarkColor : Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40),
-                      borderSide: BorderSide.none,
-                    ),
-                    prefixIcon: Icon(
-                      Icons.search,
+      appBar: AppBar(
+        backgroundColor: context.theme.scaffoldBackgroundColor,
+        title: Text('All Task'),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search',
+                  filled: true,
+                  fillColor: Get.isDarkMode ? tileDarkColor : Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(40),
+                    borderSide: BorderSide.none,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Get.isDarkMode ? Colors.white : Colors.black,
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.filter_list,
                       color: Get.isDarkMode ? Colors.white : Colors.black,
                     ),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        Icons.filter_list,
-                        color: Get.isDarkMode ? Colors.white : Colors.black,
-                      ),
-                      onPressed: () {},
-                    ),
+                    onPressed: () {
+                      _displayFilterSheet();
+                    },
                   ),
-                  onChanged: (query) {
-                    _searchTasks(query); // Update search state and query
-                  },
                 ),
+                onChanged: (query) {
+                  _searchTasks(query);
+                },
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
-            _isSearching ? _displaySearchResults() : _showTasks(),
-          ],
-        ));
+          ),
+          SizedBox(height: 20),
+          _isSearching ? _displaySearchResults() : _showTasks(),
+        ],
+      ),
+    );
   }
 
   // Show all tasks
-  _showTasks() {
+  Widget _showTasks() {
     return Expanded(
       child: Obx(() {
-        if (_taskController.taskList == null ||
-            _taskController.taskList.isEmpty) {
-          // Handle case where task list is null or empty
+        var tasksToShow = _taskController.taskList;
+        if (tasksToShow.isEmpty) {
           return const Center(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image(
-                  image: AssetImage('assets/images/emptyPage.png'),
-                ),
+                Image(image: AssetImage('assets/images/emptyPage.png')),
                 Text('What do you want to do today?'),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  'Tap + to add your tasks',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
+                SizedBox(height: 10),
+                Text('Tap + to add your tasks',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),
           );
         }
         return ListView.builder(
-            itemCount: _taskController.taskList.length,
-            itemBuilder: (_, index) {
-              Task task = _taskController.taskList[index];
-              return AnimationConfiguration.staggeredList(
-                position: index,
-                child: SlideAnimation(
-                  child: FadeInAnimation(
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            _editTaskSheet(context, task);
-                          },
-                          child: Tasktile(task),
-                        ),
-                      ],
-                    ),
+          itemCount: tasksToShow.length,
+          itemBuilder: (_, index) {
+            Task task = tasksToShow[index];
+            return AnimationConfiguration.staggeredList(
+              position: index,
+              child: SlideAnimation(
+                child: FadeInAnimation(
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          _editTaskSheet(context, task);
+                        },
+                        child: Tasktile(task),
+                      ),
+                    ],
                   ),
                 ),
-              );
-            });
+              ),
+            );
+          },
+        );
       }),
     );
   }
 
   // Edit/Update the task
-  _editTaskSheet(BuildContext context, Task task) {
+  void _editTaskSheet(BuildContext context, Task task) {
     Get.bottomSheet(
       Container(
         padding: EdgeInsets.only(top: 4),
-        width: MediaQuery.of(context).size.width * 100,
+        width: MediaQuery.of(context).size.width,
         height: task.isCompleted == 1
             ? MediaQuery.of(context).size.height * 0.36
             : MediaQuery.of(context).size.height * 0.36,
@@ -163,9 +157,7 @@ class _AllTasksState extends State<AllTasks> {
             _editTaskSheetButton(
               label: 'Update Task',
               onTap: () {
-                Get.to(
-                  () => AddTask(task: task),
-                ); // Navigate to AddTask page with task data
+                Get.to(() => AddTask(task: task));
               },
               color: primaryClr,
               context: context,
@@ -179,9 +171,7 @@ class _AllTasksState extends State<AllTasks> {
               color: Colors.red,
               context: context,
             ),
-            SizedBox(
-              height: 20,
-            ),
+            SizedBox(height: 20),
             _editTaskSheetButton(
               label: 'Close',
               onTap: () {
@@ -191,9 +181,7 @@ class _AllTasksState extends State<AllTasks> {
               isClose: true,
               context: context,
             ),
-            SizedBox(
-              height: 20,
-            ),
+            SizedBox(height: 20),
           ],
         ),
       ),
@@ -201,12 +189,13 @@ class _AllTasksState extends State<AllTasks> {
   }
 
   // Edit/Update task sheet button
-  _editTaskSheetButton(
-      {required String label,
-      required Function() onTap,
-      required Color color,
-      bool isClose = false,
-      required BuildContext context}) {
+  Widget _editTaskSheetButton({
+    required String label,
+    required Function() onTap,
+    required Color color,
+    bool isClose = false,
+    required BuildContext context,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -216,14 +205,12 @@ class _AllTasksState extends State<AllTasks> {
         decoration: BoxDecoration(
           border: Border.all(
             width: 2,
-            color: isClose == true
-                ? Get.isDarkMode
-                    ? Colors.grey[600]!
-                    : Colors.grey[300]!
+            color: isClose
+                ? (Get.isDarkMode ? Colors.grey[600]! : Colors.grey[300]!)
                 : color,
           ),
           borderRadius: BorderRadius.circular(20),
-          color: isClose == true ? Colors.transparent : color,
+          color: isClose ? Colors.transparent : color,
         ),
         child: Center(
           child: Text(
@@ -236,7 +223,7 @@ class _AllTasksState extends State<AllTasks> {
     );
   }
 
-  // search tasks
+  // Search tasks
   void _searchTasks(String query) {
     setState(() {
       _isSearching = query.isNotEmpty;
@@ -245,7 +232,7 @@ class _AllTasksState extends State<AllTasks> {
   }
 
   // Display searched result
-  _displaySearchResults() {
+  Widget _displaySearchResults() {
     return Expanded(
       child: Obx(() {
         List<Task> tasksToShow = _taskController.filteredTasks;
@@ -290,5 +277,48 @@ class _AllTasksState extends State<AllTasks> {
     );
   }
 
-  // Sort the data on the basis of priority and lastDate
+  // Show filter sheet for priority
+  void _displayFilterSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Filter by Priority',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                SizedBox(height: 16.0),
+                TextButton(
+                  onPressed: () async {
+                    _taskController.filterTasksByPriority('high');
+                    // Setting the priority status sharedPreferences
+                    final prefs = await SharedPreferences.getInstance();
+                    prefs.setInt("priorityUser", 2);
+                    Get.back();
+                  },
+                  child: Text('High to Low'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    _taskController.filterTasksByPriority('low');
+                    // Setting the priority status sharedPreferences
+                    final prefs = await SharedPreferences.getInstance();
+                    prefs.setInt("priorityUser", 2);
+                    Get.back();
+                  },
+                  child: Text('Low to High'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
