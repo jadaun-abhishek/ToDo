@@ -13,7 +13,7 @@ Future<void> main() async {
   // Onboarding screen preferences set
   final prefs = await SharedPreferences.getInstance();
   final onboarding = prefs.getBool("onboarding") ?? false;
-  final priorityUser = prefs.getInt("priorityUser") ?? 0;
+  final priorityUser = prefs.getString('priorityUser') ?? 'noFilter';
 
   await DbHelper.init();
   await GetStorage.init();
@@ -25,8 +25,9 @@ Future<void> main() async {
 
 class ToDo extends StatelessWidget {
   final bool onboarding;
-  final int priorityUser;
-  const ToDo({super.key, this.onboarding = false, this.priorityUser = 0});
+  final String priorityUser;
+  const ToDo(
+      {super.key, this.onboarding = false, this.priorityUser = 'noFilter'});
 
   @override
   Widget build(BuildContext context) {

@@ -299,7 +299,7 @@ class _AllTasksState extends State<AllTasks> {
                     _taskController.filterTasksByPriority('high');
                     // Setting the priority status sharedPreferences
                     final prefs = await SharedPreferences.getInstance();
-                    prefs.setInt("priorityUser", 2);
+                    prefs.setString("priorityUser", 'highFilter');
                     Get.back();
                   },
                   child: Text('High to Low'),
@@ -309,7 +309,7 @@ class _AllTasksState extends State<AllTasks> {
                     _taskController.filterTasksByPriority('low');
                     // Setting the priority status sharedPreferences
                     final prefs = await SharedPreferences.getInstance();
-                    prefs.setInt("priorityUser", 2);
+                    prefs.setString("priorityUser", 'lowFilter');
                     Get.back();
                   },
                   child: Text('Low to High'),

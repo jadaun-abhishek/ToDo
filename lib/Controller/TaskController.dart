@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/DbHelper/DbHelper.dart';
 
 import '../Model/Task.dart';
@@ -41,7 +42,20 @@ class TaskController extends GetxController {
   // Get all the tasks
   void getTasks() async {
     List<Map<String, dynamic>> tasks = await DbHelper.query();
-    taskList.assignAll(tasks.map((data) => Task.fromJson(data)).toList());
+    print(tasks);
+    // Get the priorityUser variable value SharedPreferences
+    final prefs = await SharedPreferences.getInstance();
+    final priorityUser = prefs.getString("priorityUser") ?? 'noFilter';
+
+    if (priorityUser == "highFilter") {
+      taskList.assignAll(tasks.map((data) => Task.fromJson(data)).toList());
+      filterTasksByPriority('high');
+    } else if (priorityUser == "lowFilter") {
+      taskList.assignAll(tasks.map((data) => Task.fromJson(data)).toList());
+      filterTasksByPriority('low');
+    } else {
+      taskList.assignAll(tasks.map((data) => Task.fromJson(data)).toList());
+    }
   }
 
   // Delete the task
@@ -70,21 +84,30 @@ class TaskController extends GetxController {
 
   // Method to filter tasks based on priority
   void filterTasksByPriority(String priorityString) {
-    List<Task> highPriorityTasks =
-        taskList.where((task) => task.priority == 2).toList();
-    List<Task> mediumPriorityTasks =
-        taskList.where((task) => task.priority == 1).toList();
-    List<Task> lowPriorityTasks =
-        taskList.where((task) => task.priority == 0).toList();
+    List<Task> highPriorityTasks = taskList
+        .where((task) => task.priority == 2 && task.isCompleted == 0)
+        .toList();
+    List<Task> mediumPriorityTasks = taskList
+        .where((task) => task.priority == 1 && task.isCompleted == 0)
+        .toList();
+    List<Task> lowPriorityTasks = taskList
+        .where((task) => task.priority == 0 && task.isCompleted == 0)
+        .toList();
+    List<Task> completedTasks =
+        taskList.where((task) => task.isCompleted == 1).toList();
 
     if (priorityString == 'high') {
       // Concatenate the lists in descending order of priority
-      taskList.value =
-          highPriorityTasks + mediumPriorityTasks + lowPriorityTasks;
+      taskList.value = highPriorityTasks +
+          mediumPriorityTasks +
+          lowPriorityTasks +
+          completedTasks;
     } else if (priorityString == 'low') {
       // Concatenate the lists in ascending order of priority
-      taskList.value =
-          lowPriorityTasks + mediumPriorityTasks + highPriorityTasks;
+      taskList.value = lowPriorityTasks +
+          mediumPriorityTasks +
+          highPriorityTasks +
+          completedTasks;
     }
   }
 }
